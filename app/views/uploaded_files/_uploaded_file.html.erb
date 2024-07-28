@@ -1,0 +1,7 @@
+<tr>
+  <th scope="row"><%= uploaded_file.id %></th>
+  <td><%= link_to uploaded_file.name, uploaded_file_path(uploaded_file) %> </td>
+  <td><%= uploaded_file.content_type %></td>
+  <td><%= uploaded_file.size %></td>
+  <td><%= uploaded_file.created_at %></td>
+</tr>
