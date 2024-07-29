@@ -13,8 +13,8 @@ class XlsxParseService < ApplicationService
 
   def companies_from(file)
     sheet = RubyXL::Parser.parse_buffer(file.read)[0]
-    sheet.map do |row|
-      cells = row.cells[0..3].map { |c| c&.value.to_s }
+    sheet.drop(1).map do |row|
+      cells = row.cells[0..12].map { |c| c&.value.to_s }
       { 
         name: cells[0],
         additional_name: cells[1],
