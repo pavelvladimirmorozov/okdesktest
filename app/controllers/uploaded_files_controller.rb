@@ -37,7 +37,7 @@ class UploadedFilesController < ApplicationController
         db_company.save
       end
       
-      flash[:success] = "Companies imported! #{parsed_companies.to_json}"
+      flash[:success] = "Companies imported!"
     end
 
     redirect_to root_path
