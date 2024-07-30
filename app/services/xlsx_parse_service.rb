@@ -15,8 +15,7 @@ class XlsxParseService < ApplicationService
     sheet = RubyXL::Parser.parse_buffer(file.read)[0]
     sheet.drop(1).map do |row|
       cells = row.cells[0..12].map { |c| c&.value.to_s }
-      { 
-        name: cells[0],
+      UploadedCompany.new name: cells[0],
         additional_name: cells[1],
         site: cells[2],
         email: cells[3],
@@ -29,7 +28,6 @@ class XlsxParseService < ApplicationService
         active: cells[10],
         request_status: cells[11],
         request_success: cells[12]
-      }
     end
   end
 end

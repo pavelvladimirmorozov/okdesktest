@@ -1,11 +1,13 @@
 <h1>Companies</h1>
 
-<%= form_with url: uploaded_files_path, class: 'input-group' do |f|  %>
+<%= form_with url: uploaded_files_path, class: 'input-group mb-3' do |f|  %>
     <%= f.file_field :file, class: 'form-control' %>
     <span class="input-group-btn">
         <%= f.submit 'Upload!', class: 'btn btn-primary' %>
     </span>
 <% end %>
+
+<%== pagy_bootstrap_nav @pagy %>
 
 <table class="table table-striped table-hover">
   <thead>

@@ -3,12 +3,12 @@ require("json")
 
 class UploadedFilesController < ApplicationController
   def index
-    @files = UploadedFile.all
+    @pagy, @files = pagy UploadedFile.order created_at: :asc
   end
 
   def show
     @file = UploadedFile.find(params[:id])
-    @companies = @file.uploaded_companies.order created_at: :asc
+    @pagy, @companies = pagy @file.uploaded_companies.order created_at: :asc
   end
   
   def create
@@ -28,16 +28,17 @@ class UploadedFilesController < ApplicationController
         response = conn.post("companies/", company.to_json);
 
         if response.success?
-          company = JSON.parse(response.body)
+          @result = company_from JSON.parse(response.body)
+          company = @result
         end
-        company[:request_success] = response.success?
-        company[:request_status] = response.status
+        company.request_success = response.success?
+        company.request_status = response.status
 
-        db_company = db_file.uploaded_companies.build company_params(company)
-        db_company.save
+        db_file.uploaded_companies << company
+        db_file.save
       end
       
-      flash[:success] = "Companies imported!"
+      flash[:success] = "Companies imported! #{@result.name}"
     end
 
     redirect_to root_path
@@ -50,23 +51,21 @@ class UploadedFilesController < ApplicationController
     { content_type: file.content_type, size: file.size, name: file.original_filename }
   end
 
-  def company_params(company)
-    {
-      name: company[:uploaded_file_id],
-      additional_name: company[:uploaded_file_id],
-      site: company[:uploaded_file_id],
-      email: company[:uploaded_file_id],
-      phone: company[:uploaded_file_id],
-      address: company[:uploaded_file_id],
-      coordinates_x: company[:uploaded_file_id],
-      coordinates_y: company[:uploaded_file_id],
-      comment: company[:uploaded_file_id],
-      category_code: company[:uploaded_file_id],
-      active: company[:uploaded_file_id],
-      request_status: company[:uploaded_file_id],
-      request_success: company[:uploaded_file_id],
-      created_at: company[:uploaded_file_id],
-      updated_at: company[:uploaded_file_id],
-    }
+  def company_from(company)
+    UploadedCompany.new name: company['name'],
+      additional_name: company['additional_name'],
+      site: company['site'],
+      email: company['email'],
+      phone: company['phone'],
+      address: company['address'],
+      coordinates_x: company['coordinates'].nil? ? nil : company['coordinates'][0],
+      coordinates_y: company['coordinates'].nil? ? nil : company['coordinates'][1],
+      comment: company['comment'],
+      category_code: company['category_code'],
+      active: company['active'],
+      request_status: company['request_status'],
+      request_success: company['request_success'],
+      created_at: company['created_at'],
+      updated_at: company['updated_at']
   end
 end

@@ -40,6 +40,7 @@ gem "jbuilder"
 
 gem 'rubyXL', '~> 3.4'
 gem 'faraday', '~> 2.10'
+gem 'pagy', '~> 9'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
