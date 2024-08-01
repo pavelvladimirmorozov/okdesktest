@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_25_193913) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_01_193314) do
   create_table "uploaded_companies", force: :cascade do |t|
     t.integer "uploaded_file_id"
     t.string "name"
@@ -37,6 +37,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_25_193913) do
     t.integer "size"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "name"
+    t.string "password_digest"
+    t.string "okdesk_account"
+    t.string "okdesk_api_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "uploaded_companies", "uploaded_files"
