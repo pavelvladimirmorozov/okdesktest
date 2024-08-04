@@ -28,8 +28,7 @@ class UploadedFilesController < ApplicationController
         response = conn.post("companies/", company.to_json);
 
         if response.success?
-          @result = company_from JSON.parse(response.body)
-          company = @result
+          company = company_from JSON.parse(response.body)
         end
         company.request_success = response.success?
         company.request_status = response.status

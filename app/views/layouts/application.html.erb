@@ -22,13 +22,18 @@
           <ul class="nav col-12 col-lg-auto mb-2 mb-md-0">
             <% if user_signed_in? %>
               <li>
-                <a class="nav-link px-2 text-white" href="#">
-                  <%= current_user.name %>
-                </a>
+                <%= link_to current_user.name, edit_user_path(current_user),
+                  class: 'nav-link px-2 text-white' %>
+              </li>
+              <li>
+                <%= link_to 'Log Out', session_path,
+                  class: 'nav-link px-2 text-white', data: {method: :delete} %>
               </li>
             <% else %>
-              <li><%= link_to 'Sign Up', new_user_path, class: 'nav-link px-2' %></li>
+            <li><%= link_to 'Sign Up', new_user_path, class: 'nav-link px-2'%></li>
+              <li><%= link_to 'Log In', new_session_path, class: 'nav-link px-2' %></li>
             <% end %>
+            
           </ul>
         </nav>
       </div>
