@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :uploaded_files, class_name: "UploadedFile", foreign_key: "author_id"
+
   attr_accessor :old_password, :remember_token
 
   validate :password_presence

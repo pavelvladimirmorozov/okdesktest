@@ -17,7 +17,9 @@
         <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><%= link_to 'Home', root_path, class: 'nav-link px-2 text-white' %></li>
-            <li><%= link_to 'Uploads', uploaded_files_path, class: 'nav-link px-2 text-white' %></li>
+            <% if user_signed_in? %>
+                <li><%= link_to 'Uploads', uploaded_files_path, class: 'nav-link px-2 text-white' %></li>
+            <% end %>
           </ul>
           <ul class="nav col-12 col-lg-auto mb-2 mb-md-0">
             <% if user_signed_in? %>
