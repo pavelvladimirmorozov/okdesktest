@@ -1,6 +1,3 @@
-require("faraday")
-require("json")
-
 class UploadedFilesController < ApplicationController
   before_action :require_authentication, only: %i[index show create]
   before_action :require_okdesk_account, only: %i[index show create]
@@ -25,20 +22,10 @@ class UploadedFilesController < ApplicationController
 
       parsed_companies = XlsxParseService.call params[:file]
       
-      conn = Faraday.new(
-        url: "https://#{@current_user.okdesk_account}.testokdesk.ru/api/v1",
-        params: { api_token: @current_user.okdesk_api_key },
-        headers: {'Content-Type' => 'application/json'}
-      )
+      api_service = OkdeskApiService.new @current_user
 
       parsed_companies.each do |company|
-        response = conn.post("companies/", company.to_json);
-
-        if response.success?
-          company = company_from JSON.parse(response.body)
-        end
-        company.request_success = response.success?
-        company.request_status = response.status
+        company = api_service.create_company company
 
         db_file.uploaded_companies << company
         db_file.save
@@ -47,7 +34,7 @@ class UploadedFilesController < ApplicationController
       flash[:success] = "Companies imported! #{db_file.name}"
     end
 
-    redirect_to root_path
+    redirect_to uploaded_files_path
   end
   
   private
@@ -70,23 +57,5 @@ class UploadedFilesController < ApplicationController
       author_api_key: @current_user.okdesk_api_key,
       author_id: @current_user.id
     }
-  end
-
-  def company_from(company)
-    UploadedCompany.new name: company['name'],
-      additional_name: company['additional_name'],
-      site: company['site'],
-      email: company['email'],
-      phone: company['phone'],
-      address: company['address'],
-      coordinates_x: company['coordinates'].nil? ? nil : company['coordinates'][0],
-      coordinates_y: company['coordinates'].nil? ? nil : company['coordinates'][1],
-      comment: company['comment'],
-      category_code: company['category_code'],
-      active: company['active'],
-      request_status: company['request_status'],
-      request_success: company['request_success'],
-      created_at: company['created_at'],
-      updated_at: company['updated_at']
   end
 end
