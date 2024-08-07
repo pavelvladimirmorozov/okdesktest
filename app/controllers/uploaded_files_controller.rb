@@ -1,6 +1,6 @@
 class UploadedFilesController < ApplicationController
   before_action :require_authentication, only: %i[index show create]
-  before_action :require_okdesk_account, only: %i[index show create]
+  before_action :require_okdesk_account, only: %i[create]
   
   def index
     @pagy, @files = pagy UploadedFile.where(author_id: @current_user.id)
@@ -42,7 +42,7 @@ class UploadedFilesController < ApplicationController
   def require_okdesk_account
     if @current_user.okdesk_account.nil? || @current_user.okdesk_account.empty? || 
       @current_user.okdesk_api_key.nil? || @current_user.okdesk_api_key.empty?
-     flash[:warning] = "OKDESK account or API key is missing"
+     flash[:warning] = "OKDESK account or API key is missing. Please fill missing fields"
      redirect_to edit_user_path @current_user.id
    end
   end
