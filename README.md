@@ -1,24 +1,19 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The application allows you to download xlsx files, extract information about companies from them and create [OKDESK](https://okdesk.ru) companies based on this information
 
-Things you may want to cover:
+## Installing
+Before starting, you should make sure that the necessary components are installed on your system:
+* [Ruby](https://www.ruby-lang.org/en/documentation/installation/)
+* [SQLite3](https://www.sqlite.org/download.html)
+* [Ruby on Rails](https://guides.rubyonrails.org/getting_started.html)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To run the application locally:
+* Clone this repository to a local folder
+* Open terminal and go to the "okdesktest" folder ``` cd <local_folder_path>/okdesktest ```
+* Install gem packages with ``` bundle i ```
+* Run the application with ``` rails s ```
+* Open browser on http://localhost:3000
+* Register and enter the data to access the Okdesk API to use the file download service
+* Go to the "Uploads" tab and upload your xlsx file with companies or use the test file shown below
+* [Test companies.xlsx](https://github.com/pavelvladimirmorozov/okdesktest/blob/main/Test%20companies.xlsx) - file with the required format and a test set of companies 
